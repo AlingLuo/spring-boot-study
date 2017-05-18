@@ -9,8 +9,9 @@ import javax.persistence.Id;
 
 /**
  * 
+ * @name: User
+ * @Description:用户实体
  * @author Administrator
- *
  */
 @Entity
 public class User implements Serializable {

@@ -17,6 +17,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alingluo.Application;
 
+/**
+ * 
+ * @name: UserRepositoryTest
+ * @Description:测试JPA
+ * @author Administrator
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 public class UserRepositoryTest {

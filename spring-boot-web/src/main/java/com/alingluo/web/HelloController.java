@@ -5,6 +5,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alingluo.domain.User;
 
+/**
+ * 
+ * @name: HelloController
+ * @Description:
+ * @author Administrator
+ */
 @RestController
 public class HelloController {
 

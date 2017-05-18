@@ -2,7 +2,6 @@ package com.alingluo.configuration;
 
 import java.lang.reflect.Method;
 
-
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -28,14 +27,15 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @Configuration
 @EnableCaching
-public class RedisConfig extends CachingConfigurerSupport{
-	
+public class RedisConfig extends CachingConfigurerSupport {
+
 	@Bean
 	public KeyGenerator keyGenerator() {
 		return new KeyGenerator() {
-			
+
 			@Override
-			public Object generate(Object target, Method method, Object... params) {
+			public Object generate(Object target, Method method,
+					Object... params) {
 				StringBuilder sb = new StringBuilder();
 				sb.append(target.getClass().getName());
 				sb.append(method.getName());
@@ -46,26 +46,29 @@ public class RedisConfig extends CachingConfigurerSupport{
 			}
 		};
 	}
-	
-	
+
 	@SuppressWarnings("rawtypes")
 	@Bean
-	public CacheManager cacheManager(RedisTemplate redisTemplate){
+	public CacheManager cacheManager(RedisTemplate redisTemplate) {
 		RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
-		//如何设置缓存过期时间
-		
-		//rcm.setDefaultExpiration(60);//秒
+		// 如何设置缓存过期时间
+
+		// rcm.setDefaultExpiration(60);//秒
 		return rcm;
 	}
-	
+
 	@Bean
-	public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory){
-		/*StringRedisTemplate template = new StringRedisTemplate(factory);*/
-		Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
+	public RedisTemplate<String, String> redisTemplate(
+			RedisConnectionFactory factory) {
+		StringRedisTemplate template = new StringRedisTemplate(factory);
+		Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(
+				Object.class);
 		ObjectMapper om = new ObjectMapper();
 		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
 		jackson2JsonRedisSerializer.setObjectMapper(om);
-		return null;
-		}
+		template.setValueSerializer(jackson2JsonRedisSerializer);
+		template.afterPropertiesSet();
+		return template;
+	}
 }
